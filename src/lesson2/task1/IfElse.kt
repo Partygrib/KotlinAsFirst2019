@@ -4,6 +4,7 @@ package lesson2.task1
 
 import lesson1.task1.discriminant
 import lesson1.task1.sqr
+import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -64,12 +65,10 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String {
-    return when {
-        (age % 10 == 1) && ((age < 10) || (age > 20 && age < 110) || (age >= 120)) -> "$age год"
-        (age % 10 >= 2) && (age % 10 <= 4) && ((age < 10) || (age > 20 && age < 110) || (age >= 120)) -> "$age года"
-        else -> "$age лет"
-    }
+fun ageDescription(age: Int): String = when {
+    (age % 10 == 1) && ((age < 10) || (age in 21..109) || (age >= 120)) -> "$age год"
+    (age % 10 in 2..4) && ((age < 10) || (age in 21..109) || (age >= 120)) -> "$age года"
+    else -> "$age лет"
 }
 
 /**
@@ -83,13 +82,15 @@ fun timeForHalfWay(
     t1: Double, v1: Double,
     t2: Double, v2: Double,
     t3: Double, v3: Double
-): Double =
-    if ((t1 * v1 + t2 * v2 + t3 * v3) / 2 <= t1 * v1)
-        (t1 * v1 + t2 * v2 + t3 *v3) / 2 / v1
-    else if ((t1 * v1 + t2 * v2 + t3 * v3) / 2 <= t2 * v2 + t1 * v1)
-        ((t1 * v1 + t2 * v2 + t3 * v3) / 2 - t1 * v1) / v2 + t1
-    else //if ((t1 * v1 + t2 * v2 + t3 * v3) / 2 <= t1 * v1 + t2 * v2 + t3 * v3)
-        ((t1 * v1 + t2 * v2 + t3 * v3) / 2 - t1 * v1 - t2 * v2) / v3 + t1 + t2
+): Double {
+    val s = (t1 * v1 + t2 * v2 + t3 * v3) / 2
+    return if (s <= t1 * v1)
+        s / v1
+    else if (s <= t2 * v2 + t1 * v1)
+        (s - t1 * v1) / v2 + t1
+    else //if (s <= s * 2)
+        (s - t1 * v1 - t2 * v2) / v3 + t1 + t2
+}
 
 /**
  * Простая
@@ -104,13 +105,11 @@ fun whichRookThreatens(
     kingX: Int, kingY: Int,
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
-): Int {
-    return when {
-        ((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2)) -> 3
-        (kingX == rookX1) || (kingY == rookY1) -> 1
-        (kingX == rookX2) || (kingY == rookY2) -> 2
-        else -> 0
-    }
+): Int = when {
+    ((kingX == rookX1) || (kingY == rookY1)) && ((kingX == rookX2) || (kingY == rookY2)) -> 3
+    (kingX == rookX1) || (kingY == rookY1) -> 1
+    (kingX == rookX2) || (kingY == rookY2) -> 2
+    else -> 0
 }
 
 /**
@@ -127,13 +126,11 @@ fun rookOrBishopThreatens(
     kingX: Int, kingY: Int,
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
-): Int {
-    return when {
-        ((kingX == rookX) || (kingY == rookY)) && ((kingY + kingX == bishopX + bishopY) || (kingX - kingY == bishopX - bishopY)) -> 3
-        (kingX == rookX) || (kingY == rookY) -> 1
-        (kingY + kingX == bishopX + bishopY) || (kingX - kingY == bishopX - bishopY) -> 2
-        else -> 0
-    }
+): Int = when {
+    ((kingX == rookX) || (kingY == rookY)) && ((kingX + kingY) == (bishopX + bishopY) || (kingX - kingY) == (bishopX - bishopY)) -> 3
+    (kingX == rookX) || (kingY == rookY) -> 1
+    ((kingX + kingY) == (bishopX + bishopY) || (kingX - kingY) == (bishopX - bishopY)) -> 2
+    else -> 0
 }
 
 /**
@@ -148,7 +145,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     return when {
         (a > b + c) || (b > a + c) || (c > a + b) -> -1
         (sqr(a) + sqr(b) == sqr(c)) || (sqr(a) + sqr(c) == sqr(b)) || (sqr(b) + sqr(c) == sqr(a)) -> 1
-        (a > b && a > c) || (b > a && b > c) || ( c > a && c > b) -> 2
+        (a > b && a > c) || (b > a && b > c) || (c > a && c > b) -> 2
         else -> 0
     }
 }

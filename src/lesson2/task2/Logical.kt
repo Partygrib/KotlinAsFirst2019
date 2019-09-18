@@ -27,7 +27,9 @@ fun isNumberHappy(number: Int): Boolean = number / 1000 + (number / 100) % 10 ==
  * Определить, угрожают ли они друг другу. Вернуть true, если угрожают.
  * Считать, что ферзи не могут загораживать друг друга.
  */
-fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = (x1 + y1 == x2 + y2) || (x1 - y1 == x2 - y2) || (x1 == x2) ||(y1 == y2)
+fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
+    (x1 + y1 == x2 + y2) || (x1 - y1 == x2 - y2)
+            || (x1 == x2) || (y1 == y2)
 
 
 /**
@@ -36,13 +38,12 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean = (x1 + y1 == x2
  * Дан номер месяца (от 1 до 12 включительно) и год (положительный).
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
-fun daysInMonth(month: Int, year: Int): Int {
-    return when {
-        (month == 2) && (year % 4 == 0) && ((year % 400 == 0) || (year % 100 != 0)) -> 29
-        month == 2 -> 28
-        (month == 1) || (month == 3) || (month == 5) || (month == 7) || (month == 8) || (month == 10) || (month == 12) -> 31
-        else -> 30
-    }
+fun daysInMonth(month: Int, year: Int): Int = when {
+    (month == 2) && (year % 4 == 0) && ((year % 400 == 0) || (year % 100 != 0)) -> 29
+    month == 2 -> 28
+    (month == 1) || (month == 3) || (month == 5) || (month == 7)
+            || (month == 8) || (month == 10) || (month == 12) -> 31
+    else -> 30
 }
 
 /**
@@ -55,7 +56,11 @@ fun daysInMonth(month: Int, year: Int): Int {
 fun circleInside(
     x1: Double, y1: Double, r1: Double,
     x2: Double, y2: Double, r2: Double
-): Boolean = (sqr(x1 - r1 - x2) + sqr(y1 - y2) <= sqr(r2)) && (sqr(x1 + r1 - x2) + sqr(y1 - y2) <= sqr(r2)) && (sqr(x1 - x2) + sqr(y1 + r1 - y2) <= sqr(r2)) && (sqr(x1 - x2) + sqr(y1 - r1 - y2) <= sqr(r2))
+): Boolean =
+    (sqr(x1 - r1 - x2) + sqr(y1 - y2) <= sqr(r2)) && (sqr(x1 + r1 - x2)
+            + sqr(y1 - y2) <= sqr(r2)) && (sqr(x1 - x2) + sqr(
+        y1 + r1 - y2
+    ) <= sqr(r2)) && (sqr(x1 - x2) + sqr(y1 - r1 - y2) <= sqr(r2))
 
 
 /**
@@ -67,4 +72,7 @@ fun circleInside(
  * кирпич 4 х 4 х 4 пройдёт через отверстие 4 х 4.
  * Вернуть true, если кирпич пройдёт
  */
-fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean = ((a <= r) && (b <= s)) || ((a <= s) && (b <= r)) || ((a <= r) && (c <= s)) || ((a <= s) && (c <= r)) || ((b <= r) && (c <= s)) || ((b <= s) && (c <= r))
+fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean =
+    ((a <= r) && (b <= s)) || ((a <= s) && (b <= r))
+            || ((a <= r) && (c <= s)) || ((a <= s) && (c <= r)) ||
+            ((b <= r) && (c <= s)) || ((b <= s) && (c <= r))
