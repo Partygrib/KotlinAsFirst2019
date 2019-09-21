@@ -127,9 +127,9 @@ fun rookOrBishopThreatens(
     rookX: Int, rookY: Int,
     bishopX: Int, bishopY: Int
 ): Int = when {
-    ((kingX == rookX) || (kingY == rookY)) && ((kingX + kingY) == (bishopX + bishopY) || (kingX - kingY) == (bishopX - bishopY)) -> 3
+    ((kingX == rookX) || (kingY == rookY)) && ((kingY + kingX == bishopX + bishopY) || (kingX - kingY == bishopX - bishopY)) -> 3
     (kingX == rookX) || (kingY == rookY) -> 1
-    ((kingX + kingY) == (bishopX + bishopY) || (kingX - kingY) == (bishopX - bishopY)) -> 2
+    (kingY + kingX == bishopX + bishopY) || (kingX - kingY == bishopX - bishopY) -> 2
     else -> 0
 }
 
@@ -141,13 +141,13 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int {
-    return when {
-        (a > b + c) || (b > a + c) || (c > a + b) -> -1
-        (sqr(a) + sqr(b) == sqr(c)) || (sqr(a) + sqr(c) == sqr(b)) || (sqr(b) + sqr(c) == sqr(a)) -> 1
-        (a > b && a > c) || (b > a && b > c) || (c > a && c > b) -> 2
-        else -> 0
-    }
+fun triangleKind(a: Double, b: Double, c: Double): Int = when {
+    (a > b + c) || (b > a + c) || (c > a + b) -> -1
+    (sqr(a) + sqr(b) == sqr(c)) || (sqr(a) + sqr(c) == sqr(b))
+            || (sqr(b) + sqr(c) == sqr(a)) -> 1
+    (sqr(a) > sqr(b) + sqr(c)) || (sqr(b) > sqr(a) + sqr(c))
+            || (sqr(c) > sqr(a) + sqr(b)) -> 2
+    else -> 0
 }
 
 /**
@@ -158,13 +158,11 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    return when {
-        (a == d) || (b == c) -> 0
-        (d > a) && (b > d) && (a > c) -> d - a
-        (b > c) && (d > b) && (c > a) -> b - c
-        (a >= c) && (d >= b) -> b - a
-        (c >= a) && (b >= d) -> d - c
-        else -> -1
-    }
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when {
+    (a == d) || (b == c) -> 0
+    (d > a) && (b > d) && (a > c) -> d - a
+    (b > c) && (d > b) && (c > a) -> b - c
+    (a >= c) && (d >= b) -> b - a
+    (c >= a) && (b >= d) -> d - c
+    else -> -1
 }
