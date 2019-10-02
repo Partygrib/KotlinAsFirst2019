@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import lesson1.task1.sqr
 import kotlin.math.sqrt
 
 /**
@@ -12,7 +13,7 @@ import kotlin.math.sqrt
 fun factorial(n: Int): Double {
     var result = 1.0
     for (i in 1..n) {
-        result = result * i // Please do not fix in master
+        result *= i // Please do not fix in master
     }
     return result
 }
@@ -67,7 +68,11 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int =
+    when {
+        n < 10 -> 1
+        else -> digitNumber(n / 10) + digitNumber(n % 10)
+    }
 
 /**
  * Простая
@@ -75,7 +80,11 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int =
+    when {
+        n < 3 -> 1
+        else -> fib(n - 2) + fib(n - 1)
+    }
 
 /**
  * Простая
@@ -83,21 +92,40 @@ fun fib(n: Int): Int = TODO()
  * Для заданных чисел m и n найти наименьшее общее кратное, то есть,
  * минимальное число k, которое делится и на m и на n без остатка
  */
-fun lcm(m: Int, n: Int): Int = TODO()
+fun lcm(m: Int, n: Int): Int {
+    for (i in 2..Int.MAX_VALUE) {
+        if ((i % m == 0) && (i % n == 0))
+            return i
+    }
+    return 0
+}
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int {
+    for (i in 2..n) {
+        if (n % i == 0)
+            return i
+    }
+    return 0
+}
 
 /**
  * Простая
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int {
+    var max = 0
+    for (i in 1..n) {
+        if ((n % i == 0) && (i >= max) && (i < n))
+            max = i
+    }
+    return max
+}
 
 /**
  * Простая
@@ -106,7 +134,14 @@ fun maxDivisor(n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    var x: Int
+    if (m >= n) x = m else x = n
+    for (i in 2..x) {
+        if ((m % i == 0) && (n % i == 0)) return false
+    }
+    return true
+}
 
 /**
  * Простая
@@ -115,7 +150,12 @@ fun isCoPrime(m: Int, n: Int): Boolean = TODO()
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
+fun squareBetweenExists(m: Int, n: Int): Boolean {
+    for (i in 1..100000) {
+        if (sqr(i) in m..n) return true
+    }
+    return false
+}
 
 /**
  * Средняя
@@ -133,7 +173,19 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = TODO()
  * Написать функцию, которая находит, сколько шагов требуется для
  * этого для какого-либо начального X > 0.
  */
-fun collatzSteps(x: Int): Int = TODO()
+fun collatzSteps(x: Int): Int {
+    var n = x
+    var k = 0
+    for (i in 1..Int.MAX_VALUE) {
+        if (n <= 1) break
+        else {
+            k += 1
+            if (n % 2 == 0) n /= 2
+            else n = 3 * n + 1
+        }
+    }
+    return k
+}
 
 /**
  * Средняя
@@ -164,7 +216,17 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun revert(n: Int): Int = TODO()
+fun revert(n: Int): Int {
+    var x = n
+    var z = 0
+    var y: Int
+    while (x > 0) {
+        y = x % 10
+        x /= 10
+        z = z * 10 + y
+    }
+    return z
+}
 
 /**
  * Средняя
@@ -175,7 +237,17 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean {
+    var a = n
+    var c: Int
+    var x = 0
+    while (a > 0) {
+        c = a % 10
+        a /= 10
+        x = x * 10 + c
+    }
+    return n == x
+}
 
 /**
  * Средняя
@@ -185,7 +257,18 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var x = n
+    var y: Int
+    if (n == 0) return false
+    else while (x > 0) {
+        y = x % 10
+        x /= 10
+        if (x == 0) break
+        if (x % 10 != y) return true
+    }
+    return false
+}
 
 /**
  * Сложная
@@ -196,7 +279,42 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var k = 0
+    var y = 0
+    var l = 0
+    if (n < 4) return n * n
+    if (n in 4..15) {
+        for (i in 4..n) {
+            if (i % 2 != 0) {
+                k += 1
+                y = sqr(i - k) % 10
+            } else
+                y = sqr(i - k) / 10
+        }
+    }
+    if (n > 15) {
+        k = 6
+        for (i in 16..n) {
+            when {
+                i - 16 == 3 * l -> {
+                    y = sqr(i - k) / 100
+                    k += 1
+                }
+                i - 17 == 3 * l -> {
+                    y = (sqr(i - k) / 10) % 10
+                    k += 1
+                }
+                i - 18 == 3 * l -> {
+                    y = sqr(i - k) % 10
+                    l += 1
+                }
+            }
+        }
+    }
+    return y
+}
+
 
 /**
  * Сложная
@@ -207,4 +325,33 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var k = 2
+    var a = 0
+    var b = 1
+    var c = 1
+    var g = n - 2
+    if (n < 3) return 1
+    while (g > 0) {
+        k += 1
+        a = b + c
+        if (k % 2 == 0) b = a
+        else c = a
+        when {
+            a < 10 -> g -= 1
+            a in 10..99 -> g -= 2
+            a in 100..999 -> g -= 3
+        }
+    }
+    when {
+        (a < 10) -> return a
+        (a in 10..99) && (n % 2 != 0) -> a /= 10
+        (a in 10..99) && (n % 2 == 0) -> a %= 10
+        (a in 100..999) && (n in 17..99 step 3) -> a /= 100
+        (a in 100..999) && (n in 18..99 step 3) -> a = (a / 10) % 10
+        (a in 100..999) && (n in 19..99 step 3) -> a %= 10
+    }
+
+    return a
+}
+
