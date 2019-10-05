@@ -80,11 +80,20 @@ fun digitNumber(n: Int): Int =
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int =
-    when {
-        n < 3 -> 1
-        else -> fib(n - 2) + fib(n - 1)
+fun fib(n: Int): Int {
+    var a = 0
+    var b = 1
+    var c = 1
+    var k = 2
+    if (n < 3) return 1
+    for (i in 3..n) {
+        k += 1
+        a = b + c
+        if (k % 2 == 0) b = a
+        else c = a
     }
+    return a
+}
 
 /**
  * Простая
@@ -135,8 +144,7 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var x: Int
-    if (m >= n) x = m else x = n
+    val x: Int = if (m >= n) m else n
     for (i in 2..x) {
         if ((m % i == 0) && (n % i == 0)) return false
     }
@@ -261,7 +269,7 @@ fun hasDifferentDigits(n: Int): Boolean {
     var x = n
     var y: Int
     if (n == 0) return false
-    else while (x > 0) {
+    while (x > 0) {
         y = x % 10
         x /= 10
         if (x == 0) break
@@ -282,38 +290,33 @@ fun hasDifferentDigits(n: Int): Boolean {
 fun squareSequenceDigit(n: Int): Int {
     var k = 0
     var y = 0
-    var l = 0
-    if (n < 4) return n * n
-    if (n in 4..15) {
-        for (i in 4..n) {
-            if (i % 2 != 0) {
-                k += 1
-                y = sqr(i - k) % 10
-            } else
-                y = sqr(i - k) / 10
+    var a = 0
+    var z = 0
+    var m = 0
+    var h = 0
+    for (i in 1..n) {
+        a = sqr(i)
+        if (a % 10 == 0) a += 2
+        while (a > 0) {
+            y = a % 10
+            a /= 10
+            z = z * 10 + y
         }
-    }
-    if (n > 15) {
-        k = 6
-        for (i in 16..n) {
-            when {
-                i - 16 == 3 * l -> {
-                    y = sqr(i - k) / 100
-                    k += 1
-                }
-                i - 17 == 3 * l -> {
-                    y = (sqr(i - k) / 10) % 10
-                    k += 1
-                }
-                i - 18 == 3 * l -> {
-                    y = sqr(i - k) % 10
-                    l += 1
-                }
+        h = z
+        z = 0
+        while (h > 0) {
+            if (k == n) break
+            else {
+                m = h % 10
+                h /= 10
+                k += 1
             }
         }
     }
-    return y
+    if ((a % 10 == 0) && (m == 2)) return 0
+    return m
 }
+
 
 
 /**
@@ -330,28 +333,35 @@ fun fibSequenceDigit(n: Int): Int {
     var a = 0
     var b = 1
     var c = 1
-    var g = n - 2
+    var m = 0
+    var e = 2
+    var y = 0
+    var z = 0
+    var h = 0
     if (n < 3) return 1
-    while (g > 0) {
+    for (i in 3..n) {
         k += 1
         a = b + c
         if (k % 2 == 0) b = a
         else c = a
-        when {
-            a < 10 -> g -= 1
-            a in 10..99 -> g -= 2
-            a in 100..999 -> g -= 3
+        if (a % 10 == 0) a += 1
+        while (a > 0) {
+            y = a % 10
+            a /= 10
+            z = z * 10 + y
+        }
+        h = z
+        z = 0
+        while (h > 0) {
+            if (e == n) break
+            else {
+                m = h % 10
+                h /= 10
+                e += 1
+            }
         }
     }
-    when {
-        (a < 10) -> return a
-        (a in 10..99) && (n % 2 != 0) -> a /= 10
-        (a in 10..99) && (n % 2 == 0) -> a %= 10
-        (a in 100..999) && (n in 17..99 step 3) -> a /= 100
-        (a in 100..999) && (n in 18..99 step 3) -> a = (a / 10) % 10
-        (a in 100..999) && (n in 19..99 step 3) -> a %= 10
-    }
-
-    return a
+    if ((a % 10 == 0) && (m == 1)) return 0
+    return m
 }
 
