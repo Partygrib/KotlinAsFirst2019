@@ -3,6 +3,7 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import lesson1.task1.sqr
 import kotlin.math.sqrt
 
 /**
@@ -115,7 +116,13 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = TODO()
+fun abs(v: List<Double>): Double {
+    var k = 0.0
+    for (element in v) {
+        k += element * element
+    }
+    return sqrt(k)
+}
 
 /**
  * Простая
@@ -135,7 +142,7 @@ fun mean(list: List<Double>): Double =
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun center(list: MutableList<Double>): MutableList<Double> {
-    val s = list.sum() / list.size
+    val s = mean(list)
     for (i in 0 until list.size) {
         list[i] = list[i] - s
     }
@@ -149,7 +156,13 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): Int = TODO()
+fun times(a: List<Int>, b: List<Int>): Int {
+    var c = 0
+    for (i in a.indices) {
+        c += a[i] * b[i]
+    }
+    return c
+}
 
 /**
  * Средняя
@@ -159,7 +172,24 @@ fun times(a: List<Int>, b: List<Int>): Int = TODO()
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0 при любом x.
  */
-fun polynom(p: List<Int>, x: Int): Int = TODO()
+fun polynom(p: List<Int>, x: Int): Int {
+    var n = 0
+    var y = 1
+    var k = 0
+    var z = 0
+    for (i in p.indices) {
+        z = p[i]
+        while (i > k) {
+            y *= x
+            k += 1
+        }
+        y *= z
+        n += y
+        k = 0
+        y = 1
+    }
+    return n
+}
 
 /**
  * Средняя
@@ -188,7 +218,17 @@ fun accumulate(list: MutableList<Int>): MutableList<Int> {
  * Результат разложения вернуть в виде списка множителей, например 75 -> (3, 5, 5).
  * Множители в списке должны располагаться по возрастанию.
  */
-fun factorize(n: Int): List<Int> = TODO()
+fun factorize(n: Int): List<Int> {
+    val result = mutableListOf<Int>()
+    var a = n
+    for (i in 2..n) {
+        while (a % i == 0) {
+            a /= i
+            result.add(i)
+        }
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -197,7 +237,7 @@ fun factorize(n: Int): List<Int> = TODO()
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String = TODO()
+fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*")
 
 /**
  * Средняя
@@ -206,7 +246,16 @@ fun factorizeToString(n: Int): String = TODO()
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): MutableList<Int> {
+    val result = mutableListOf<Int>()
+    var x = n
+    while (x > base) {
+        result.add(0, x % base)
+        x /= base
+    }
+    result.add(0, x % base)
+    return result
+}
 
 /**
  * Сложная
@@ -219,7 +268,92 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    val t = mutableListOf<Int>()
+    val w = mutableListOf<String>()
+    var x = n
+    while (x > base) {
+        t.add(0, x % base)
+        when {
+            x % base == 0 -> w.add(0, "0")
+            x % base == 1 -> w.add(0, "1")
+            x % base == 2 -> w.add(0, "2")
+            x % base == 3 -> w.add(0, "3")
+            x % base == 4 -> w.add(0, "4")
+            x % base == 5 -> w.add(0, "5")
+            x % base == 6 -> w.add(0, "6")
+            x % base == 7 -> w.add(0, "7")
+            x % base == 8 -> w.add(0, "8")
+            x % base == 9 -> w.add(0, "9")
+            x % base == 10 -> w.add(0, "a")
+            x % base == 11 -> w.add(0, "b")
+            x % base == 12 -> w.add(0, "c")
+            x % base == 13 -> w.add(0, "d")
+            x % base == 14 -> w.add(0, "e")
+            x % base == 15 -> w.add(0, "f")
+            x % base == 16 -> w.add(0, "g")
+            x % base == 17 -> w.add(0, "h")
+            x % base == 18 -> w.add(0, "i")
+            x % base == 19 -> w.add(0, "j")
+            x % base == 20 -> w.add(0, "k")
+            x % base == 21 -> w.add(0, "l")
+            x % base == 22 -> w.add(0, "m")
+            x % base == 23 -> w.add(0, "n")
+            x % base == 24 -> w.add(0, "o")
+            x % base == 25 -> w.add(0, "p")
+            x % base == 26 -> w.add(0, "q")
+            x % base == 27 -> w.add(0, "r")
+            x % base == 28 -> w.add(0, "s")
+            x % base == 29 -> w.add(0, "t")
+            x % base == 30 -> w.add(0, "u")
+            x % base == 31 -> w.add(0, "v")
+            x % base == 32 -> w.add(0, "w")
+            x % base == 33 -> w.add(0, "x")
+            x % base == 34 -> w.add(0, "y")
+            x % base == 35 -> w.add(0, "z")
+        }
+        x /= base
+    }
+    when {
+        x % base == 0 -> w.add(0, "0")
+        x % base == 1 -> w.add(0, "1")
+        x % base == 2 -> w.add(0, "2")
+        x % base == 3 -> w.add(0, "3")
+        x % base == 4 -> w.add(0, "4")
+        x % base == 5 -> w.add(0, "5")
+        x % base == 6 -> w.add(0, "6")
+        x % base == 7 -> w.add(0, "7")
+        x % base == 8 -> w.add(0, "8")
+        x % base == 9 -> w.add(0, "9")
+        x % base == 10 -> w.add(0, "a")
+        x % base == 11 -> w.add(0, "b")
+        x % base == 12 -> w.add(0, "c")
+        x % base == 13 -> w.add(0, "d")
+        x % base == 14 -> w.add(0, "e")
+        x % base == 15 -> w.add(0, "f")
+        x % base == 16 -> w.add(0, "g")
+        x % base == 17 -> w.add(0, "h")
+        x % base == 18 -> w.add(0, "i")
+        x % base == 19 -> w.add(0, "j")
+        x % base == 20 -> w.add(0, "k")
+        x % base == 21 -> w.add(0, "l")
+        x % base == 22 -> w.add(0, "m")
+        x % base == 23 -> w.add(0, "n")
+        x % base == 24 -> w.add(0, "o")
+        x % base == 25 -> w.add(0, "p")
+        x % base == 26 -> w.add(0, "q")
+        x % base == 27 -> w.add(0, "r")
+        x % base == 28 -> w.add(0, "s")
+        x % base == 29 -> w.add(0, "t")
+        x % base == 30 -> w.add(0, "u")
+        x % base == 31 -> w.add(0, "v")
+        x % base == 32 -> w.add(0, "w")
+        x % base == 33 -> w.add(0, "x")
+        x % base == 34 -> w.add(0, "y")
+        x % base == 35 -> w.add(0, "z")
+    }
+    return w.joinToString(separator = "")
+}
 
 /**
  * Средняя
@@ -228,7 +362,22 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    val s = digits.size - 1
+    var k = 0
+    var n = 0
+    var d = 1
+    for (i in digits.indices) {
+        k = s - i
+        while (k != 0) {
+            k -= 1
+            d *= base
+        }
+        n += d * digits[i]
+        d = 1
+    }
+    return n
+}
 
 /**
  * Сложная
@@ -242,7 +391,61 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    val s = str.length - 1
+    var n = 0
+    var k = 0
+    var d = 1
+    var x = 0
+    for (i in 0..str.length - 1) {
+        when (str[i]) {
+            '0' -> n = 0
+            '1' -> n = 1
+            '2' -> n = 2
+            '3' -> n = 3
+            '4' -> n = 4
+            '5' -> n = 5
+            '6' -> n = 6
+            '7' -> n = 7
+            '8' -> n = 8
+            '9' -> n = 9
+            'a' -> n = 10
+            'b' -> n = 11
+            'c' -> n = 12
+            'd' -> n = 13
+            'e' -> n = 14
+            'f' -> n = 15
+            'g' -> n = 16
+            'h' -> n = 17
+            'i' -> n = 18
+            'j' -> n = 19
+            'k' -> n = 20
+            'l' -> n = 21
+            'm' -> n = 22
+            'n' -> n = 23
+            'o' -> n = 24
+            'p' -> n = 25
+            'q' -> n = 26
+            'r' -> n = 27
+            's' -> n = 28
+            't' -> n = 29
+            'u' -> n = 30
+            'v' -> n = 31
+            'w' -> n = 32
+            'x' -> n = 33
+            'y' -> n = 34
+            'z' -> n = 35
+        }
+        k = s - i
+        while (k != 0) {
+            k -= 1
+            d *= base
+        }
+        x += d * n
+        d = 1
+    }
+    return x
+}
 
 /**
  * Сложная
@@ -252,7 +455,81 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    val r = mutableListOf<String>()
+    var p = n
+    var h = n
+    var o = 0
+    var s = 0
+    var j = "I"
+    var v = "V"
+    var x = "X"
+    var k = 0
+    if (n == 0) return "0"
+    while (h != 0) {
+        h /= 10
+        s += 1
+    }
+    for (i in 1..s) {
+        o = p % 10
+        p /= 10
+        k += 1
+        when (o) {
+            1 -> r.add(0, j)
+            2 -> {
+                r.add(0, j)
+                r.add(0, j)
+            }
+            3 -> {
+                r.add(0, j)
+                r.add(0, j)
+                r.add(0, j)
+            }
+            4 -> {
+                r.add(0, v)
+                r.add(0, j)
+            }
+            5 -> r.add(0, v)
+            6 -> {
+                r.add(0, j)
+                r.add(0, v)
+            }
+            7 -> {
+                r.add(0, j)
+                r.add(0, j)
+                r.add(0, v)
+            }
+            8 -> {
+                r.add(0, j)
+                r.add(0, j)
+                r.add(0, j)
+                r.add(0, v)
+            }
+            9 -> {
+                r.add(0, x)
+                r.add(0, j)
+            }
+        }
+        when (v) {
+            "V" -> {
+                j = x
+                v = "L"
+                x = "C"
+            }
+            "L" -> {
+                j = x
+                v = "D"
+                x = "M"
+            }
+            "D" -> {
+                j = x
+                v = "V"
+                x = "X"
+            }
+        }
+    }
+    return r.joinToString(separator = "")
+}
 
 /**
  * Очень сложная
