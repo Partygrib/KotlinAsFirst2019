@@ -249,7 +249,7 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
 fun convert(n: Int, base: Int): MutableList<Int> {
     val result = mutableListOf<Int>()
     var x = n
-    while (x > base) {
+    while (x >= base) {
         result.add(0, x % base)
         x /= base
     }
@@ -273,7 +273,7 @@ fun convertToString(n: Int, base: Int): String {
     val v = mutableListOf<String>()
     var x = n
     var k: String
-    while (x > base) {
+    while (x >= base) {
         w.add(preobrazovanie(x % base))
         x /= base
     }
@@ -519,7 +519,7 @@ fun russian(n: Int): String {
             if (i == 4) r.add(0, "тысяч")
             when (o) {
                 0 -> r.add(0, "десять")
-                1 -> r.add(0, "одинадцать")
+                1 -> r.add(0, "одиннадцать")
                 2 -> r.add(0, "двенадцать")
                 3 -> r.add(0, "тринадцать")
                 4 -> r.add(0, "четырнадцать")

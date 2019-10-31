@@ -386,8 +386,16 @@ fun hasAnagrams(words: List<String>): Boolean {
  *        )
  */
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
-    val x = mutableMapOf<String, Set<String>>()
+    var x = mutableMapOf<String, Set<String>>()
+    for (i in 1..friends.size) {
+        x = hand(friends) as MutableMap<String, Set<String>>
+    }
+    return x
+}
+
+fun hand(friends: Map<String, Set<String>>): Map<String, Set<String>> {
     var y = mutableSetOf<String>()
+    val x = mutableMapOf<String, Set<String>>()
     for ((name1, names) in friends) {
         y.addAll(names)
         for (name2 in names) {
@@ -421,8 +429,8 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
 fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     for (i in list.indices) {
         for (k in list.indices) {
-            if (list[i] + list[k] == number) {
-                if (list[i] > list[k]) return Pair<Int, Int>(k, i)
+            if ((list[i] + list[k] == number) && (i != k)) {
+                if (i > k) return Pair<Int, Int>(k, i)
                 else Pair<Int, Int>(i, k)
             }
         }
