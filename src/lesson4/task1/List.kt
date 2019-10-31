@@ -269,90 +269,31 @@ fun convert(n: Int, base: Int): MutableList<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    val t = mutableListOf<Int>()
     val w = mutableListOf<String>()
+    val v = mutableListOf<String>()
     var x = n
+    var k: String
     while (x > base) {
-        t.add(0, x % base)
-        when {
-            x % base == 0 -> w.add(0, "0")
-            x % base == 1 -> w.add(0, "1")
-            x % base == 2 -> w.add(0, "2")
-            x % base == 3 -> w.add(0, "3")
-            x % base == 4 -> w.add(0, "4")
-            x % base == 5 -> w.add(0, "5")
-            x % base == 6 -> w.add(0, "6")
-            x % base == 7 -> w.add(0, "7")
-            x % base == 8 -> w.add(0, "8")
-            x % base == 9 -> w.add(0, "9")
-            x % base == 10 -> w.add(0, "a")
-            x % base == 11 -> w.add(0, "b")
-            x % base == 12 -> w.add(0, "c")
-            x % base == 13 -> w.add(0, "d")
-            x % base == 14 -> w.add(0, "e")
-            x % base == 15 -> w.add(0, "f")
-            x % base == 16 -> w.add(0, "g")
-            x % base == 17 -> w.add(0, "h")
-            x % base == 18 -> w.add(0, "i")
-            x % base == 19 -> w.add(0, "j")
-            x % base == 20 -> w.add(0, "k")
-            x % base == 21 -> w.add(0, "l")
-            x % base == 22 -> w.add(0, "m")
-            x % base == 23 -> w.add(0, "n")
-            x % base == 24 -> w.add(0, "o")
-            x % base == 25 -> w.add(0, "p")
-            x % base == 26 -> w.add(0, "q")
-            x % base == 27 -> w.add(0, "r")
-            x % base == 28 -> w.add(0, "s")
-            x % base == 29 -> w.add(0, "t")
-            x % base == 30 -> w.add(0, "u")
-            x % base == 31 -> w.add(0, "v")
-            x % base == 32 -> w.add(0, "w")
-            x % base == 33 -> w.add(0, "x")
-            x % base == 34 -> w.add(0, "y")
-            x % base == 35 -> w.add(0, "z")
-        }
+        w.add(preobrazovanie(x % base))
         x /= base
     }
-    when {
-        x % base == 0 -> w.add(0, "0")
-        x % base == 1 -> w.add(0, "1")
-        x % base == 2 -> w.add(0, "2")
-        x % base == 3 -> w.add(0, "3")
-        x % base == 4 -> w.add(0, "4")
-        x % base == 5 -> w.add(0, "5")
-        x % base == 6 -> w.add(0, "6")
-        x % base == 7 -> w.add(0, "7")
-        x % base == 8 -> w.add(0, "8")
-        x % base == 9 -> w.add(0, "9")
-        x % base == 10 -> w.add(0, "a")
-        x % base == 11 -> w.add(0, "b")
-        x % base == 12 -> w.add(0, "c")
-        x % base == 13 -> w.add(0, "d")
-        x % base == 14 -> w.add(0, "e")
-        x % base == 15 -> w.add(0, "f")
-        x % base == 16 -> w.add(0, "g")
-        x % base == 17 -> w.add(0, "h")
-        x % base == 18 -> w.add(0, "i")
-        x % base == 19 -> w.add(0, "j")
-        x % base == 20 -> w.add(0, "k")
-        x % base == 21 -> w.add(0, "l")
-        x % base == 22 -> w.add(0, "m")
-        x % base == 23 -> w.add(0, "n")
-        x % base == 24 -> w.add(0, "o")
-        x % base == 25 -> w.add(0, "p")
-        x % base == 26 -> w.add(0, "q")
-        x % base == 27 -> w.add(0, "r")
-        x % base == 28 -> w.add(0, "s")
-        x % base == 29 -> w.add(0, "t")
-        x % base == 30 -> w.add(0, "u")
-        x % base == 31 -> w.add(0, "v")
-        x % base == 32 -> w.add(0, "w")
-        x % base == 33 -> w.add(0, "x")
-        x % base == 34 -> w.add(0, "y")
-        x % base == 35 -> w.add(0, "z")
+    w.add(preobrazovanie(x % base))
+    for (i in 0 until w.size) {
+        v.add(0, w[i])
     }
-    return w.joinToString(separator = "")
+    return v.joinToString(separator = "")
+}
+
+fun preobrazovanie(x: Int): String {
+    var k = x
+    var a = ""
+    when (k) {
+        in 0..9 -> a = k.toString()
+        else -> {
+            a = (k.toChar() + 87).toString()
+        }
+    }
+    return a
 }
 
 /**
@@ -363,20 +304,11 @@ fun convertToString(n: Int, base: Int): String {
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
 fun decimal(digits: List<Int>, base: Int): Int {
-    val s = digits.size - 1
-    var k = 0
-    var n = 0
-    var d = 1
+    val x = mutableListOf<Int>()
     for (i in digits.indices) {
-        k = s - i
-        while (k != 0) {
-            k -= 1
-            d *= base
-        }
-        n += d * digits[i]
-        d = 1
+        x.add(0, digits[i])
     }
-    return n
+    return polynom(x, base)
 }
 
 /**
@@ -538,4 +470,88 @@ fun roman(n: Int): String {
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+fun russian(n: Int): String {
+    val a = listOf(
+        "один",
+        "два",
+        "три",
+        "четыре",
+        "пять",
+        "шесть",
+        "семь",
+        "восемь",
+        "девять",
+        "",
+        "двадцать",
+        "тридцать",
+        "сорок",
+        "пятьдесят",
+        "шестьдесят",
+        "семьдесят",
+        "восемьдесят",
+        "девяносто",
+        "сто",
+        "двести",
+        "триста",
+        "четыреста",
+        "пятьсот",
+        "шестьсот",
+        "семьсот",
+        "восемьсот",
+        "девятьсот"
+    )
+    var h = n
+    var s = 0
+    val r = mutableListOf<String>()
+    var x = n
+    var o = 0
+    var k = 0
+    if (n == 0) return "ноль"
+    while (h != 0) {
+        h /= 10
+        s += 1
+    }
+    for (i in 1..s) {
+        o = x % 10
+        x /= 10
+        if (k == 27) k = 0
+        if ((x % 10 == 1) && (k == 0)) {
+            if (i == 4) r.add(0, "тысяч")
+            when (o) {
+                0 -> r.add(0, "десять")
+                1 -> r.add(0, "одинадцать")
+                2 -> r.add(0, "двенадцать")
+                3 -> r.add(0, "тринадцать")
+                4 -> r.add(0, "четырнадцать")
+                5 -> r.add(0, "пятнадцать")
+                6 -> r.add(0, "шестнадцать")
+                7 -> r.add(0, "семнадцать")
+                8 -> r.add(0, "восемнадцать")
+                9 -> r.add(0, "девятнадцать")
+            }
+        } else {
+            if (i == 4) {
+                when (o) {
+                    1 -> r.add(0, "тысяча")
+                    2, 3, 4 -> r.add(0, "тысячи")
+                    else -> r.add(0, "тысяч")
+                }
+            }
+            when {
+                o == 1 && i == 4 -> r.add(0, "одна")
+                o == 2 && i == 4 -> r.add(0, "две")
+                o == 1 && (i != 2 && i != 5) -> r.add(0, a[0 + k])
+                o == 2 -> r.add(0, a[1 + k])
+                o == 3 -> r.add(0, a[2 + k])
+                o == 4 -> r.add(0, a[3 + k])
+                o == 5 -> r.add(0, a[4 + k])
+                o == 6 -> r.add(0, a[5 + k])
+                o == 7 -> r.add(0, a[6 + k])
+                o == 8 -> r.add(0, a[7 + k])
+                o == 9 -> r.add(0, a[8 + k])
+            }
+        }
+        k += 9
+    }
+    return r.joinToString(separator = " ")
+}
