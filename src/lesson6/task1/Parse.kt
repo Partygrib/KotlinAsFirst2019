@@ -69,7 +69,51 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    var k = 0
+    val parts = str.split(" ")
+    var day = 0
+    var month = 0
+    var year = 0
+    val m = mapOf<String, Int>(
+        "января" to 1,
+        "февраля" to 2,
+        "марта" to 3,
+        "апреля" to 4,
+        "мая" to 5,
+        "июня" to 6,
+        "июля" to 7,
+        "августа" to 8,
+        "сентября" to 9,
+        "октября" to 10,
+        "ноября" to 11,
+        "декабря" to 12
+    )
+    try {
+        for (part in parts) {
+            k += 1
+            when (k) {
+                1 -> day = part.toInt()
+                2 -> {
+                    if (part in m) month = m[part]!!
+                    else return ""
+                }
+                3 -> year = part.toInt()
+            }
+        }
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+    return if (k == 3 && ((month == 2 && year % 4 == 0 && (year % 400 == 0
+                || year % 100 != 0) && day in 1..29) ||
+                (month == 2 && day in 1..28) || ((month == 1 ||
+                month == 3 || month == 5 || month == 7
+                || month == 8 || month == 10 || month == 12) && day in 1..31)
+                || ((month == 4 || month == 6 || month == 9
+                || month == 11) && day in 1..30))
+    ) String.format("%02d.%02d.%02d", day, month, year)
+    else ""
+}
 
 /**
  * Средняя
@@ -81,7 +125,52 @@ fun dateStrToDigit(str: String): String = TODO()
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30 февраля 2009) считается неверными
  * входными данными.
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    var k = 0
+    val parts = digital.split(".")
+    var day = 0
+    var month = ""
+    var year = 0
+    val m = mapOf<Int, String>(
+        1 to "января",
+        2 to "февраля",
+        3 to "марта",
+        4 to "апреля",
+        5 to "мая",
+        6 to "июня",
+        7 to "июля",
+        8 to "августа",
+        9 to "сентября",
+        10 to "октября",
+        11 to "ноября",
+        12 to "декабря"
+    )
+    try {
+        for (part in parts) {
+            k += 1
+            when (k) {
+                1 -> day = part.toInt()
+                2 -> {
+                    val f = part.toInt()
+                    if (f in m) month = m[f].toString()
+                    else return ""
+                }
+                3 -> year = part.toInt()
+            }
+        }
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+    return if (k == 3 && ((month == "февраля" && year % 4 == 0 && (year % 400 == 0
+                || year % 100 != 0) && day in 1..29) ||
+                (month == "февраля" && day in 1..28) || ((month == "января" ||
+                month == "марта" || month == "мая" || month == "июля"
+                || month == "августа" || month == "октября" || month == "декабря") && day in 1..31)
+                || ((month == "апреля" || month == "июня" || month == "сентября"
+                || month == "ноября") && day in 1..30))
+    ) String.format("%d %s %d", day, month, year)
+    else ""
+}
 
 /**
  * Средняя

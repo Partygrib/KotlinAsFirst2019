@@ -93,28 +93,14 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
     var y = mutableMapOf<Int, List<String>>()
-    val zero = mutableListOf<String>()
-    val one = mutableListOf<String>()
-    val two = mutableListOf<String>()
-    val three = mutableListOf<String>()
-    val four = mutableListOf<String>()
-    val five = mutableListOf<String>()
-    for ((name, grade) in grades) {
-        when (grade) {
-            0 -> zero.add(name)
-            1 -> one.add(name)
-            2 -> two.add(name)
-            3 -> three.add(name)
-            4 -> four.add(name)
-            5 -> five.add(name)
+    var c = mutableListOf<String>()
+    for ((name1, grade1) in grades) {
+        for ((name2, grade2) in grades) {
+            if (grade1 == grade2) c.add(name2)
         }
+        y[grade1] = c
+        c = mutableListOf()
     }
-    if (zero.size != 0) y[0] = zero
-    if (one.size != 0) y[1] = one
-    if (two.size != 0) y[2] = two
-    if (three.size != 0) y[3] = three
-    if (four.size != 0) y[4] = four
-    if (five.size != 0) y[5] = five
     return y
 }
 
@@ -150,11 +136,10 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
-    for ((nam, wor) in a) {
-        var n = nam
-        var w = wor
-        for ((name, word) in b) {
-            if ((n == name) && (w == word)) a.remove(nam)
+    val x = a
+    for ((name1, word1) in a) {
+        for ((name2, word2) in b) {
+            if ((name1 == name2) && (word1 == word2)) x.remove(name1)
         }
     }
     return Unit
@@ -168,9 +153,15 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
 fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
+    val v = mutableListOf<String>()
     val x = mutableListOf<String>()
     for (word in a) {
-        if (word in b) x.add(word)
+        if (word in b) {
+            if (word !in v) {
+                x.add(word)
+                v.add(word)
+            }
+        }
     }
     return x
 }
@@ -387,7 +378,7 @@ fun hasAnagrams(words: List<String>): Boolean {
  */
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
     var x = mutableMapOf<String, Set<String>>()
-    for (i in 1..friends.size) {
+    for (i in 0..friends.size) {
         x = hand(friends) as MutableMap<String, Set<String>>
     }
     return x
