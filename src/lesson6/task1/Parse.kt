@@ -111,7 +111,7 @@ fun dateStrToDigit(str: String): String {
                 || month == 8 || month == 10 || month == 12) && day in 1..31)
                 || ((month == 4 || month == 6 || month == 9
                 || month == 11) && day in 1..30))
-    ) String.format("%02d.%02d.%02d", day, month, year)
+    ) String.format("%02d.%02d.%d", day, month, year)
     else ""
 }
 
@@ -211,7 +211,20 @@ fun bestLongJump(jumps: String): Int = TODO()
  * При нарушении формата входной строки, а также в случае отсутствия удачных попыток,
  * вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    var max = -1
+    var n = 0
+    val parts = jumps.split("+", "%", "-")
+    for (part in parts) {
+        try {
+            n = part.trim().toInt()
+        } catch (e: NumberFormatException) {
+            continue
+        }
+        if (String.format("%d +", n) in jumps) if (n > max) max = n
+    }
+    return max
+}
 
 /**
  * Сложная
