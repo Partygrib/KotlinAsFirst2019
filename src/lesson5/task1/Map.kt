@@ -378,7 +378,7 @@ fun hasAnagrams(words: List<String>): Boolean {
  */
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
     var x = mutableMapOf<String, Set<String>>()
-    for (i in 0..friends.size) {
+    for (i in 0..friends.size + 1) {
         x = hand(friends) as MutableMap<String, Set<String>>
     }
     return x
