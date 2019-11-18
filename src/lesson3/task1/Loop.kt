@@ -69,13 +69,14 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-    var k = 1
-    var c = n
-    while (c > 9) {
-        c /= 10
+    var k = 0
+    var y = n
+    while (y != 0) {
         k += 1
+        y /= 10
     }
-    return k
+    return if (n == 0) 1
+    else k
 }
 
 /**
@@ -106,11 +107,13 @@ fun fib(n: Int): Int {
  * минимальное число k, которое делится и на m и на n без остатка
  */
 fun lcm(m: Int, n: Int): Int {
-    for (i in 2..Int.MAX_VALUE) {
-        if ((i % m == 0) && (i % n == 0))
-            return i
+    var x = m
+    var y = n
+    while (x != y) {
+        if (x > y) x -= y
+        else y -= x
     }
-    return 0
+    return m * n / x
 }
 
 /**
@@ -131,14 +134,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    var max = 0
-    for (i in 1..n) {
-        if ((n % i == 0) && (i >= max) && (i < n))
-            max = i
-    }
-    return max
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая
@@ -148,7 +144,7 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    val x: Int = if (m >= n) m else n
+    val x = if (m >= n) m else n
     for (i in 2..x) {
         if ((m % i == 0) && (n % i == 0)) return false
     }
@@ -163,7 +159,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    for (i in 1..100000) {
+    for (i in 1..n + 1) {
         if (sqr(i) in m..n) return true
     }
     return false
@@ -246,10 +242,7 @@ fun revert(n: Int): Int {
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean {
-    var x = revert(n)
-    return n == x
-}
+fun isPalindrome(n: Int): Boolean = revert(n) == n
 
 /**
  * Средняя
@@ -282,31 +275,39 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var k = 0
-    var i = 0
-    var y = 0
-    var c = 0
-    var m = 0
-    var l = 0
-    while (k < n) {
-        i += 1
-        y = sqr(i)
-        l = 10
-        c = 1
-        while (y / l != 0) {
-            c += 1
-            l *= 10
+    var a = 0
+    var s = 0
+    var x = 0
+    var t = 0
+    var p = 0
+    var e = 0
+    for (i in 1..n) {
+        a = sqr(i)
+        x = a
+        e = a
+        while (e != 0) {
+            t += 1
+            e /= 10
         }
-        k += c
+        while (a != 0) {
+            s += 1
+            p += 1
+            if (s == n) {
+                if (x < 10) return a
+                else {
+                    while (t != p) {
+                        x /= 10
+                        t -= 1
+                    }
+                }
+                return x % 10
+            }
+            a /= 10
+        }
+        p = 0
+        t = 0
     }
-    k -= c
-    l /= 10
-    while (k != n) {
-        m = (y / l) % 10
-        l /= 10
-        k += 1
-    }
-    return m
+    return 0
 }
 
 
@@ -320,30 +321,45 @@ fun squareSequenceDigit(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var i = 0
-    var k = 0
-    var c = 0
-    var m = 0
-    var l = 0
-    var y = 0
-    while (k < n) {
-        i += 1
-        y = fib(i)
-        l = 10
-        c = 1
-        while (y / l != 0) {
-            c += 1
-            l *= 10
-        }
-        k += c
-    }
-    k -= c
-    l /= 10
-    while (k != n) {
-        m = (y / l) % 10
-        l /= 10
+    var a = 0
+    var b = 1
+    var c = 1
+    var k = 2
+    var s = 2
+    var x = 0
+    var t = 0
+    var p = 0
+    var e = 0
+    if (n < 3) return 1
+    for (i in 3..n) {
         k += 1
+        a = b + c
+        if (k % 2 == 0) b = a
+        else c = a
+        x = a
+        e = a
+        while (e != 0) {
+            t += 1
+            e /= 10
+        }
+        while (a != 0) {
+            s += 1
+            p += 1
+            if (s == n) {
+                if (x < 10) return a
+                else {
+                    while (t != p) {
+                        x /= 10
+                        t -= 1
+                    }
+                }
+                return x % 10
+            }
+            a /= 10
+        }
+        p = 0
+        t = 0
     }
-    return m
+    return 0
 }
 
