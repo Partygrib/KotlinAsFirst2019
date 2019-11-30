@@ -130,7 +130,7 @@ fun abs(v: List<Double>): Double {
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
 fun mean(list: List<Double>): Double =
-    if (list.sum() == 0.0) 0.0
+    if (list.isEmpty()) 0.0
     else list.sum() / list.size
 
 /**
@@ -202,7 +202,7 @@ fun polynom(p: List<Int>, x: Int): Int {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
-    if (list.sum() == 0) return list
+    if (list.isEmpty()) return list
     for (i in 1 until list.size) {
         list[i] = list[i - 1] + list[i]
     }
@@ -244,19 +244,15 @@ fun factorizeToString(n: Int): String = factorize(n).joinToString(separator = "*
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): MutableList<Int> {
+fun convert(n: Int, base: Int): List<Int> {
     val result = mutableListOf<Int>()
     var x = n
-    val v = mutableListOf<Int>()
     while (x >= base) {
         result.add(x % base)
         x /= base
     }
     result.add(x % base)
-    for (i in 0 until result.size) {
-        v.add(0, result[i])
-    }
-    return v
+    return result.reversed()
 }
 
 /**
@@ -273,9 +269,8 @@ fun convert(n: Int, base: Int): MutableList<Int> {
 fun convertToString(n: Int, base: Int): String {
     val b = convert(n, base)
     val result = mutableListOf<String>()
-    for (i in 0 until b.size) {
-        var a = ""
-        a = when (b[i]) {
+    for (i in b.indices) {
+        val a = when (b[i]) {
             in 0..9 -> b[i].toString()
             else -> (b[i].toChar() + 87).toString()
         }
@@ -293,14 +288,10 @@ fun convertToString(n: Int, base: Int): String {
  */
 fun decimal(digits: List<Int>, base: Int): Int {
     val x = mutableListOf<Int>()
-    val v = mutableListOf<Int>()
     for (i in digits.indices) {
         x.add(digits[i])
     }
-    for (i in 0 until x.size) {
-        v.add(0, x[i])
-    }
-    return polynom(v, base)
+    return polynom(x.reversed(), base)
 }
 
 /**
@@ -340,7 +331,7 @@ fun decimalFromString(str: String, base: Int): Int {
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
 fun roman(n: Int): String {
-    val rome = mutableListOf<String>(
+    val rome = listOf(
         "I",
         "II",
         "III",
@@ -372,9 +363,8 @@ fun roman(n: Int): String {
         "MM",
         "MMM"
     )
-    val arab = mutableListOf<Int>(1, 2, 3, 4, 5, 6, 7, 8, 9)
+    val arab = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
     val r = mutableListOf<String>()
-    val v = mutableListOf<String>()
     var h = n
     var o = 0
     var s = ""
@@ -383,7 +373,7 @@ fun roman(n: Int): String {
     while (h != 0) {
         o = h % 10
         h /= 10
-        for (i in 0 until arab.size) {
+        for (i in arab.indices) {
             if (o == arab[i]) {
                 s = rome[i + k]
                 break
@@ -393,10 +383,7 @@ fun roman(n: Int): String {
         r.add(s)
         s = ""
     }
-    for (i in 0 until r.size) {
-        v.add(0, r[i])
-    }
-    return v.joinToString(separator = "")
+    return r.reversed().joinToString(separator = "")
 }
 
 /**
@@ -439,7 +426,6 @@ fun russian(n: Int): String {
     var h = n
     var s = 0
     val r = mutableListOf<String>()
-    val v = mutableListOf<String>()
     var x = n
     var o = 0
     var k = 0
@@ -490,8 +476,5 @@ fun russian(n: Int): String {
         }
         k += 9
     }
-    for (i in 0 until r.size) {
-        v.add(0, r[i])
-    }
-    return v.joinToString(separator = " ")
+    return r.reversed().joinToString(separator = " ")
 }

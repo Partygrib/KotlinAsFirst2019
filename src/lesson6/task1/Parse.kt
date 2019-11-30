@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import lesson2.task2.daysInMonth
+
 /**
  * Пример
  *
@@ -70,12 +72,12 @@ fun main() {
  * входными данными.
  */
 fun dateStrToDigit(str: String): String {
-    var k = 0
     val parts = str.split(" ")
+    if (parts.size != 3) return ""
     var day = 0
     var month = 0
     var year = 0
-    val m = mapOf<String, Int>(
+    val m = mapOf(
         "января" to 1,
         "февраля" to 2,
         "марта" to 3,
@@ -90,28 +92,15 @@ fun dateStrToDigit(str: String): String {
         "декабря" to 12
     )
     try {
-        for (part in parts) {
-            k += 1
-            when (k) {
-                1 -> day = part.toInt()
-                2 -> {
-                    if (part in m) month = m[part]!!
-                    else return ""
-                }
-                3 -> year = part.toInt()
-            }
-        }
+        day = parts[0].toInt()
+        if (parts[1] in m) month = m[parts[1]]!!
+        else return ""
+        year = parts[2].toInt()
     } catch (e: NumberFormatException) {
         return ""
     }
-    return if (k == 3 && ((month == 2 && year % 4 == 0 && (year % 400 == 0
-                || year % 100 != 0) && day in 1..29) ||
-                (month == 2 && day in 1..28) || ((month == 1 ||
-                month == 3 || month == 5 || month == 7
-                || month == 8 || month == 10 || month == 12) && day in 1..31)
-                || ((month == 4 || month == 6 || month == 9
-                || month == 11) && day in 1..30))
-    ) String.format("%02d.%02d.%d", day, month, year)
+    return if (daysInMonth(month, year) >= day)
+        String.format("%02d.%02d.%d", day, month, year)
     else ""
 }
 
@@ -126,12 +115,13 @@ fun dateStrToDigit(str: String): String {
  * входными данными.
  */
 fun dateDigitToStr(digital: String): String {
-    var k = 0
     val parts = digital.split(".")
+    if (parts.size != 3) return ""
     var day = 0
     var month = ""
     var year = 0
-    val m = mapOf<Int, String>(
+    var f = 0
+    val m = mapOf(
         1 to "января",
         2 to "февраля",
         3 to "марта",
@@ -146,29 +136,16 @@ fun dateDigitToStr(digital: String): String {
         12 to "декабря"
     )
     try {
-        for (part in parts) {
-            k += 1
-            when (k) {
-                1 -> day = part.toInt()
-                2 -> {
-                    val f = part.toInt()
-                    if (f in m) month = m[f].toString()
-                    else return ""
-                }
-                3 -> year = part.toInt()
-            }
-        }
+        day = parts[0].toInt()
+        f = parts[1].toInt()
+        if (f in m) month = m[f].toString()
+        else return ""
+        year = parts[2].toInt()
     } catch (e: NumberFormatException) {
         return ""
     }
-    return if (k == 3 && ((month == "февраля" && year % 4 == 0 && (year % 400 == 0
-                || year % 100 != 0) && day in 1..29) ||
-                (month == "февраля" && day in 1..28) || ((month == "января" ||
-                month == "марта" || month == "мая" || month == "июля"
-                || month == "августа" || month == "октября" || month == "декабря") && day in 1..31)
-                || ((month == "апреля" || month == "июня" || month == "сентября"
-                || month == "ноября") && day in 1..30))
-    ) String.format("%d %s %d", day, month, year)
+    return if (daysInMonth(f, year) >= day)
+        String.format("%d %s %d", day, month, year)
     else ""
 }
 
@@ -235,7 +212,26 @@ fun bestHighJump(jumps: String): Int {
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    var result = 0
+    var n = 0
+    val parts = expression.split(" ")
+    for (i in parts.indices) {
+        when {
+            (parts[i] != "%d") && (i % 2 == 0) -> throw IllegalArgumentException()
+            (parts[i] != "%s") && (i % 2 != 0) -> throw IllegalArgumentException()
+        }
+        if (i % 2 == 0) {
+            n = parts[i].toInt()
+            if (i == 0) result = n
+            else {
+                if (String.format("%s %d", parts[i - 1], n) == String.format("+ %d", n)) result += n
+                else result -= n
+            }
+        }
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -246,7 +242,20 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    val parts = str.split(" ")
+    var x = ""
+    var y = ""
+    for (i in 0..parts.size - 2) {
+        x = parts[i].toUpperCase()
+        y = parts[i + 1].toUpperCase()
+        if (x == y) {
+            val n = str.split(String.format("%s %s", parts[i], parts[i + 1]))
+            return n[0].length
+        }
+    }
+    return -1
+}
 
 /**
  * Сложная
@@ -259,7 +268,7 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): MatchResult? = TODO()
 
 /**
  * Сложная

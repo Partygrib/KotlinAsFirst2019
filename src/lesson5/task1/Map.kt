@@ -92,9 +92,9 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
 fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
-    var y = mutableMapOf<Int, List<String>>()
+    val y = mutableMapOf<Int, List<String>>()
     var c = mutableListOf<String>()
-    for ((name1, grade1) in grades) {
+    for ((_, grade1) in grades) {
         for ((name2, grade2) in grades) {
             if (grade1 == grade2) c.add(name2)
         }
@@ -116,7 +116,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  */
 fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
     for ((name, word) in a) {
-        if ((a[word] != b[word]) || (a[name] != b[name])) return false
+        if (word != b[name]) return false
     }
     return true
 }
@@ -136,13 +136,13 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
-    val x = a
-    for ((name1, word1) in a) {
-        for ((name2, word2) in b) {
-            if ((name1 == name2) && (word1 == word2)) x.remove(name1)
+    val list = mutableListOf<String>()
+    if (b.isNotEmpty()) {
+        for ((name, word) in a) {
+            if ((name == b[word]) && (word == b[name])) list.add(name)
         }
+        a -= list
     }
-    return Unit
 }
 
 /**
@@ -335,22 +335,7 @@ fun extractRepeats(list: List<String>): Map<String, Int> {
  * Например:
  *   hasAnagrams(listOf("тор", "свет", "рот")) -> true
  */
-fun hasAnagrams(words: List<String>): Boolean {
-    var k = 0
-    var n = 0
-    for (word1 in words) {
-        for (word2 in words) {
-            for (letter in word1) {
-                if (letter in word2) n += 1
-            }
-            if (n == word2.length) k += 1
-            if (k > 1) return true
-            n = 0
-        }
-        k = 0
-    }
-    return false
-}
+fun hasAnagrams(words: List<String>): Boolean = TODO()
 
 /**
  * Сложная
@@ -377,9 +362,12 @@ fun hasAnagrams(words: List<String>): Boolean {
  *        )
  */
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
-    var x = mutableMapOf<String, Set<String>>()
-    for (i in 0..friends.size + 1) {
-        x = hand(friends) as MutableMap<String, Set<String>>
+    var x: MutableMap<String, Set<String>>
+    var y = mutableMapOf<String, Set<String>>()
+    x = hand(friends) as MutableMap<String, Set<String>>
+    while (x != y) {
+        y = x
+        x = hand(x) as MutableMap<String, Set<String>>
     }
     return x
 }
@@ -391,7 +379,7 @@ fun hand(friends: Map<String, Set<String>>): Map<String, Set<String>> {
         y.addAll(names)
         for (name2 in names) {
             if (friends[name2] == null) x[name2] = mutableSetOf<String>()
-            if (friends[name2] != null) y.addAll(friends[name2] ?: error(""))
+            else y.addAll(friends[name2] ?: error(""))
             if (name1 in y) y.remove(name1)
         }
         x[name1] = y
@@ -421,12 +409,12 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     for (i in list.indices) {
         for (k in list.indices) {
             if ((list[i] + list[k] == number) && (i != k)) {
-                if (i > k) return Pair<Int, Int>(k, i)
-                else Pair<Int, Int>(i, k)
+                if (i > k) return k to i
+                else i to k
             }
         }
     }
-    return Pair<Int, Int>(-1, -1)
+    return -1 to -1
 }
 
 /**
