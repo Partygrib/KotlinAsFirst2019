@@ -74,9 +74,9 @@ fun main() {
 fun dateStrToDigit(str: String): String {
     val parts = str.split(" ")
     if (parts.size != 3) return ""
-    var day = 0
-    var month = 0
-    var year = 0
+    val day: Int
+    val month: Int
+    val year: Int
     val m = mapOf(
         "января" to 1,
         "февраля" to 2,
@@ -117,10 +117,10 @@ fun dateStrToDigit(str: String): String {
 fun dateDigitToStr(digital: String): String {
     val parts = digital.split(".")
     if (parts.size != 3) return ""
-    var day = 0
-    var month = ""
-    var year = 0
-    var f = 0
+    val day: Int
+    val month: String
+    val year: Int
+    val f: Int
     val m = mapOf(
         1 to "января",
         2 to "февраля",
@@ -190,7 +190,7 @@ fun bestLongJump(jumps: String): Int = TODO()
  */
 fun bestHighJump(jumps: String): Int {
     var max = -1
-    var n = 0
+    var n: Int
     val parts = jumps.split("+", "%", "-")
     for (part in parts) {
         try {
@@ -212,26 +212,7 @@ fun bestHighJump(jumps: String): Int {
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int {
-    var result = 0
-    var n = 0
-    val parts = expression.split(" ")
-    for (i in parts.indices) {
-        when {
-            (parts[i] != "%d") && (i % 2 == 0) -> throw IllegalArgumentException()
-            (parts[i] != "%s") && (i % 2 != 0) -> throw IllegalArgumentException()
-        }
-        if (i % 2 == 0) {
-            n = parts[i].toInt()
-            if (i == 0) result = n
-            else {
-                if (String.format("%s %d", parts[i - 1], n) == String.format("+ %d", n)) result += n
-                else result -= n
-            }
-        }
-    }
-    return result
-}
+fun plusMinus(expression: String): Int = TODO()
 
 /**
  * Сложная
@@ -244,8 +225,8 @@ fun plusMinus(expression: String): Int {
  */
 fun firstDuplicateIndex(str: String): Int {
     val parts = str.split(" ")
-    var x = ""
-    var y = ""
+    var x: String
+    var y: String
     for (i in 0..parts.size - 2) {
         x = parts[i].toUpperCase()
         y = parts[i + 1].toUpperCase()
@@ -268,7 +249,7 @@ fun firstDuplicateIndex(str: String): Int {
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше либо равны нуля.
  */
-fun mostExpensive(description: String): MatchResult? = TODO()
+fun mostExpensive(description: String): String = TODO()
 
 /**
  * Сложная
