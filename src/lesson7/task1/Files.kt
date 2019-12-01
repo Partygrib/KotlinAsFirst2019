@@ -538,7 +538,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         outputStream.write(String.format("%d", o))
         outputStream.newLine()
         n = a - o
-        if (digitNumber(n) - digitNumber(o) == -3) m = digitNumber(n)
+        if (digitNumber(n) > digitNumber(o)) m = digitNumber(n) - 1
         else m = digitNumber(o)
         for (j in 0..digitNumber(lhv) - k - m) {
             outputStream.write(" ")
