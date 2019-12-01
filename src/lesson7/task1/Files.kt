@@ -433,7 +433,6 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     val s = digitNumber(p)
     val s1 = digitNumber(lhv)
     val s2 = digitNumber(rhv)
-    var k = s1
     for (i in 0..s - s1) {
         outputStream.write(" ")
     }
@@ -445,8 +444,7 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
     }
     outputStream.write(String.format("%d", rhv))
     outputStream.newLine()
-    k += digitNumber(rhv)
-    for (i in 1..k) {
+    for (i in 0..s) {
         outputStream.write("-")
     }
     outputStream.newLine()
@@ -460,7 +458,7 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
         outputStream.write(String.format("%d", o))
         outputStream.newLine()
     }
-    for (i in 1..k) {
+    for (i in 0..s) {
         outputStream.write("-")
     }
     outputStream.newLine()
@@ -498,7 +496,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var o = 0
     var n = 0
     var m = 0
-    var s = 0
+    var g = 0
     outputStream.write(" ")
     outputStream.write(String.format("%d", lhv))
     outputStream.write(" ")
@@ -526,7 +524,6 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     n = a - o
     for (i in 0..digitNumber(a) - digitNumber(n)) {
         outputStream.write(" ")
-        s = s + 1
     }
     outputStream.write(String.format("%d", n))
     for (i in 0 until list.size) {
@@ -540,14 +537,16 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         outputStream.write("-")
         outputStream.write(String.format("%d", o))
         outputStream.newLine()
-        for (j in 0..digitNumber(lhv) - k - digitNumber(o)) {
+        n = a - o
+        if (digitNumber(n) - digitNumber(o) == -3) m = digitNumber(n)
+        else m = digitNumber(o)
+        for (j in 0..digitNumber(lhv) - k - m) {
             outputStream.write(" ")
         }
-        for (j in 0..digitNumber(o)) {
+        for (j in 0..m) {
             outputStream.write("-")
         }
         outputStream.newLine()
-        n = a - o
         for (j in 0..digitNumber(lhv) - k - digitNumber(n) + 1) {
             outputStream.write(" ")
         }
