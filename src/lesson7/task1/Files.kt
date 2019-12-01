@@ -2,6 +2,7 @@
 
 package lesson7.task1
 
+import lesson3.task1.digitNumber
 import java.io.File
 import java.nio.charset.Charset
 
@@ -425,7 +426,47 @@ fun markdownToHtml(inputName: String, outputName: String) {
  *
  */
 fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+    val outputStream = File(outputName).bufferedWriter()
+    var a = rhv
+    var o = 0
+    val p = lhv * rhv
+    val s = digitNumber(p)
+    val s1 = digitNumber(lhv)
+    val s2 = digitNumber(rhv)
+    var k = s1
+    for (i in 0..s - s1) {
+        outputStream.write(" ")
+    }
+    outputStream.write(String.format("%d", lhv))
+    outputStream.newLine()
+    outputStream.write("*")
+    for (i in 1..s - s2) {
+        outputStream.write(" ")
+    }
+    outputStream.write(String.format("%d", rhv))
+    outputStream.newLine()
+    k += digitNumber(rhv)
+    for (i in 1..k) {
+        outputStream.write("-")
+    }
+    outputStream.newLine()
+    for (i in 0 until s2) {
+        o = (a % 10) * lhv
+        a /= 10
+        for (j in 0..s - digitNumber(o) - i) {
+            if (i > 0 && j == 0) outputStream.write("+")
+            else outputStream.write(" ")
+        }
+        outputStream.write(String.format("%d", o))
+        outputStream.newLine()
+    }
+    for (i in 1..k) {
+        outputStream.write("-")
+    }
+    outputStream.newLine()
+    outputStream.write(" ")
+    outputStream.write(String.format("%d", p))
+    outputStream.close()
 }
 
 
@@ -450,6 +491,69 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  *
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
-    TODO()
+    val outputStream = File(outputName).bufferedWriter()
+    val list = mutableListOf<Int>()
+    var a = lhv
+    var k = 0
+    var o = 0
+    var n = 0
+    var m = 0
+    var s = 0
+    outputStream.write(" ")
+    outputStream.write(String.format("%d", lhv))
+    outputStream.write(" ")
+    outputStream.write("|")
+    outputStream.write(" ")
+    outputStream.write(String.format("%d", rhv))
+    outputStream.newLine()
+    outputStream.write("-")
+    while ((a / 10) / rhv > 0) {
+        list.add(a % 10)
+        a /= 10
+        k += 1
+    }
+    o = (a / rhv) * rhv
+    outputStream.write(String.format("%d", o))
+    for (i in 1..k + 3) {
+        outputStream.write(" ")
+    }
+    outputStream.write(String.format("%d", lhv / rhv))
+    outputStream.newLine()
+    for (i in 1..digitNumber(o) + 1) {
+        outputStream.write("-")
+    }
+    outputStream.newLine()
+    n = a - o
+    for (i in 0..digitNumber(a) - digitNumber(n)) {
+        outputStream.write(" ")
+        s = s + 1
+    }
+    outputStream.write(String.format("%d", n))
+    for (i in 0 until list.size) {
+        outputStream.write(String.format("%d", list.reversed()[i]))
+        outputStream.newLine()
+        a = list.reversed()[i] + n * 10
+        o = (a / rhv) * rhv
+        for (j in 0..digitNumber(lhv) - k - digitNumber(o)) {
+            outputStream.write(" ")
+        }
+        outputStream.write("-")
+        outputStream.write(String.format("%d", o))
+        outputStream.newLine()
+        for (j in 0..digitNumber(lhv) - k - digitNumber(o)) {
+            outputStream.write(" ")
+        }
+        for (j in 0..digitNumber(o)) {
+            outputStream.write("-")
+        }
+        outputStream.newLine()
+        n = a - o
+        for (j in 0..digitNumber(lhv) - k - digitNumber(n) + 1) {
+            outputStream.write(" ")
+        }
+        outputStream.write(String.format("%d", n))
+        k -= 1
+    }
+    outputStream.close()
 }
 
