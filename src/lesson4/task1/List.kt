@@ -173,22 +173,20 @@ fun times(a: List<Int>, b: List<Int>): Int {
  * Значение пустого многочлена равно 0 при любом x.
  */
 fun polynom(p: List<Int>, x: Int): Int {
-    var n = 0
-    var y = 1
+    var px = 0
+    var part = 1
     var k = 0
-    var z = 0
     for (i in p.indices) {
-        z = p[i]
         while (i > k) {
-            y *= x
+            part *= x
             k += 1
         }
-        y *= z
-        n += y
+        part *= p[i]
+        px += part
         k = 0
-        y = 1
+        part = 1
     }
-    return n
+    return px
 }
 
 /**
@@ -202,7 +200,6 @@ fun polynom(p: List<Int>, x: Int): Int {
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
-    if (list.isEmpty()) return list
     for (i in 1 until list.size) {
         list[i] = list[i - 1] + list[i]
     }
@@ -310,17 +307,11 @@ fun decimalFromString(str: String, base: Int): Int {
     val list = mutableListOf<Int>()
     val y = "0123456789abcdefghijklmnopqrstuvwxyz"
     for (element in str) {
-        var a = 0
-        for (i in y.indices) {
-            if (element == y[i]) {
-                a = i
-                break
-            }
-        }
-        list.add(a)
+        list.add(y.indexOf(element))
     }
     return decimal(list, base)
 }
+
 
 /**
  * Сложная
@@ -366,7 +357,7 @@ fun roman(n: Int): String {
     val arab = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9)
     val r = mutableListOf<String>()
     var h = n
-    var o = 0
+    var o: Int
     var s = ""
     var k = 0
     if (n == 0) return "0"
@@ -427,7 +418,7 @@ fun russian(n: Int): String {
     var s = 0
     val r = mutableListOf<String>()
     var x = n
-    var o = 0
+    var o: Int
     var k = 0
     if (n == 0) return "ноль"
     while (h != 0) {

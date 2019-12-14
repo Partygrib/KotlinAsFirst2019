@@ -159,7 +159,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    for (i in 0..sqrt(n.toDouble()).toInt()) {
+    for (i in sqrt(m.toDouble()).toInt()..sqrt(n.toDouble()).toInt()) {
         if (sqr(i) in m..n) return true
     }
     return false
@@ -275,10 +275,10 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var a = 0
+    var a: Int
     var s = 0
-    var x = 0
-    var t = 0
+    var x: Int
+    var t: Int
     var p = 0
     for (i in 1..n) {
         a = sqr(i)
@@ -315,15 +315,14 @@ fun squareSequenceDigit(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var a = 0
+    var a: Int
     var b = 1
     var c = 1
     var k = 2
     var s = 2
-    var x = 0
-    var t = 0
+    var x: Int
+    var t: Int
     var p = 0
-    var e = 0
     if (n < 3) return 1
     for (i in 3..n) {
         k += 1
@@ -331,7 +330,6 @@ fun fibSequenceDigit(n: Int): Int {
         if (k % 2 == 0) b = a
         else c = a
         x = a
-        e = a
         t = digitNumber(a)
         while (a != 0) {
             s += 1

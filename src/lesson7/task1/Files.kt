@@ -496,7 +496,6 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var o = 0
     var n = 0
     var m = 0
-    var g = 0
     outputStream.write(" ")
     outputStream.write(String.format("%d", lhv))
     outputStream.write(" ")

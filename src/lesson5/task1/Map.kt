@@ -91,18 +91,9 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
-    val y = mutableMapOf<Int, List<String>>()
-    var c = mutableListOf<String>()
-    for ((_, grade1) in grades) {
-        for ((name2, grade2) in grades) {
-            if (grade1 == grade2) c.add(name2)
-        }
-        y[grade1] = c
-        c = mutableListOf()
-    }
-    return y
-}
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> =
+    grades.toList().groupBy { pair -> pair.second }
+        .mapValues { entry -> entry.value.map { it.first } }
 
 /**
  * Простая
@@ -137,11 +128,13 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
     val list = mutableListOf<String>()
-    if (b.isNotEmpty()) {
+    if (a.isNotEmpty()) {
         for ((name, word) in a) {
             if ((name == b[word]) && (word == b[name])) list.add(name)
         }
-        a -= list
+        for (i in 0 until list.size) {
+            a.remove(list[i])
+        }
     }
 }
 
@@ -152,19 +145,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
  * В выходном списке не должно быть повторяюихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    val v = mutableListOf<String>()
-    val x = mutableListOf<String>()
-    for (word in a) {
-        if (word in b) {
-            if (word !in v) {
-                x.add(word)
-                v.add(word)
-            }
-        }
-    }
-    return x
-}
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = a.intersect(b).toList()
 
 /**
  * Средняя
@@ -187,9 +168,9 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
     val x = mutableMapOf<String, String>()
     val bre = mutableListOf<String>()
     var k = 0
-    var max = mutableMapOf<String, String>()
-    var min = mutableMapOf<String, String>()
-    var list = mutableListOf<String>()
+    val max: MutableMap<String, String>
+    val min: MutableMap<String, String>
+    var list: MutableList<String>
     if (mapA.size >= mapB.size) {
         max = mapA as MutableMap<String, String>
         min = mapB as MutableMap<String, String>
@@ -228,10 +209,10 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
-    var s = 0.0
+    var s: Double
     var n = 0
     var k = 0
-    var v = 0.0
+    var v: Double
     var t = 1
     val x = mutableMapOf<String, Double>()
     for ((sale1, price1) in stockPrices) {
@@ -269,12 +250,11 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  */
 fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? {
     var minP = Double.MAX_VALUE
-    var minN = "kind"
-    var k = 0
-    for ((name, Pair) in stuff) {
-        if (Pair.first == kind) {
-            if (Pair.second <= minP) {
-                minP = Pair.second
+    var minN = "null"
+    for ((name, pair) in stuff) {
+        if (pair.first == kind) {
+            if (pair.second <= minP) {
+                minP = pair.second
                 minN = name
             }
         }
@@ -292,12 +272,9 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    for (i in word.indices) {
-        if (word[i] !in chars) return false
-    }
-    return true
-}
+fun canBuildFrom(chars: List<Char>, word: String): Boolean =
+    (word.toSet().intersect(chars.toSet()).toList().sorted()
+            == chars.sorted()) && (chars.isNotEmpty())
 
 /**
  * Средняя
