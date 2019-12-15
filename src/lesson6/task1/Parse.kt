@@ -351,6 +351,9 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                 '-' -> list[n] = list[n] - 1
             }
         }
+        if (n >= list.size || n < 0) {
+            throw IllegalStateException()
+        }
         s += 1
     }
     return list
