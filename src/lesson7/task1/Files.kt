@@ -496,32 +496,40 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     var o = 0
     var n = 0
     var m = 0
-    outputStream.write(" ")
-    outputStream.write(String.format("%d", lhv))
-    outputStream.write(" ")
-    outputStream.write("|")
-    outputStream.write(" ")
-    outputStream.write(String.format("%d", rhv))
-    outputStream.newLine()
-    outputStream.write("-")
+    var t = 0
     while ((a / 10) / rhv > 0) {
         list.add(a % 10)
         a /= 10
         k += 1
     }
     o = (a / rhv) * rhv
+    if (digitNumber(o) == digitNumber(a)) outputStream.write(" ")
+    else t = 1
+    outputStream.write(String.format("%d", lhv))
+    outputStream.write(" ")
+    outputStream.write("|")
+    outputStream.write(" ")
+    outputStream.write(String.format("%d", rhv))
+    outputStream.newLine()
+    if (digitNumber(o) == digitNumber(a)) outputStream.write("-")
+    else {
+        for (j in 0..digitNumber(lhv) - k - digitNumber(o) - 2) {
+            outputStream.write(" ")
+        }
+        outputStream.write("-")
+    }
     outputStream.write(String.format("%d", o))
     for (i in 1..k + 3) {
         outputStream.write(" ")
     }
     outputStream.write(String.format("%d", lhv / rhv))
     outputStream.newLine()
-    for (i in 1..digitNumber(o) + 1) {
+    for (j in 0..digitNumber(a) - t) {
         outputStream.write("-")
     }
     outputStream.newLine()
     n = a - o
-    for (i in 0..digitNumber(a) - digitNumber(n)) {
+    for (i in 0..digitNumber(a) - digitNumber(n) - t) {
         outputStream.write(" ")
     }
     outputStream.write(String.format("%d", n))
@@ -530,7 +538,7 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         outputStream.newLine()
         a = list.reversed()[i] + n * 10
         o = (a / rhv) * rhv
-        for (j in 0..digitNumber(lhv) - k - digitNumber(o)) {
+        for (j in 0..digitNumber(lhv) - k - digitNumber(o) - t) {
             outputStream.write(" ")
         }
         outputStream.write("-")
@@ -539,14 +547,14 @@ fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
         n = a - o
         if (digitNumber(n) > digitNumber(o)) m = digitNumber(n) - 1
         else m = digitNumber(o)
-        for (j in 0..digitNumber(lhv) - k - m) {
+        for (j in 0..digitNumber(lhv) - k - m - t) {
             outputStream.write(" ")
         }
         for (j in 0..m) {
             outputStream.write("-")
         }
         outputStream.newLine()
-        for (j in 0..digitNumber(lhv) - k - digitNumber(n) + 1) {
+        for (j in 0..digitNumber(lhv) - k - digitNumber(n) + 1 - t) {
             outputStream.write(" ")
         }
         outputStream.write(String.format("%d", n))

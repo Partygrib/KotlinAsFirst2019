@@ -301,7 +301,8 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
-    if (Regex("""[\[\]]""").findAll(commands, 0).toList().map { it.value }.size % 2 != 0
+    if (Regex("""[\[]""").findAll(commands, 0).toList().map { it.value }.size !=
+        Regex("""[]]""").findAll(commands, 0).toList().map { it.value }.size
         || Regex("""[^- ><+\[\]]""").findAll(commands, 0).toList().map { it.value }.isNotEmpty()
     ) {
         throw IllegalArgumentException()
