@@ -2,6 +2,8 @@
 
 package lesson8.task2
 
+import kotlin.math.abs
+
 /**
  * Клетка шахматной доски. Шахматная доска квадратная и имеет 8 х 8 клеток.
  * Поэтому, обе координаты клетки (горизонталь row, вертикаль column) могут находиться в пределах от 1 до 8.
@@ -22,7 +24,13 @@ data class Square(val column: Int, val row: Int) {
      * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
      * Для клетки не в пределах доски вернуть пустую строку
      */
-    fun notation(): String = TODO()
+    fun notation(): String {
+        val list = listOf<Char>('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
+        if (column in 1..8 && row in 1..8) {
+            return String.format("%c%d", list[column - 1], row)
+        }
+        return ""
+    }
 }
 
 /**
@@ -32,7 +40,23 @@ data class Square(val column: Int, val row: Int) {
  * В нотации, колонки обозначаются латинскими буквами от a до h, а ряды -- цифрами от 1 до 8.
  * Если нотация некорректна, бросить IllegalArgumentException
  */
-fun square(notation: String): Square = TODO()
+fun square(notation: String): Square {
+    var n = 0
+    val list = listOf<Char>('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
+    if (notation[0].toString() == """[abcdefgh]""" || notation[1].toString() == """[1-8]""" ||
+        notation.length != 2
+    ) {
+        throw IllegalArgumentException()
+    }
+    for (i in 0..7) {
+        if (list[i] == notation[0]) {
+            n = i + 1
+            break
+        }
+
+    }
+    return Square(n, notation[1].toString().toInt())
+}
 
 /**
  * Простая
@@ -118,7 +142,32 @@ fun bishopMoveNumber(start: Square, end: Square): Int = TODO()
  *          bishopTrajectory(Square(1, 3), Square(6, 8)) = listOf(Square(1, 3), Square(6, 8))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun bishopTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun bishopTrajectory(start: Square, end: Square): List<Square> {
+    val list = mutableListOf<Pair<Int, Int>>()
+    if (start == end) return listOf(start)
+    if (abs(start.column - end.column) == abs(start.row - end.row)) return listOf(start, end)
+    for (i in 1..8) {
+        for (j in 1..8) {
+            list.add(i to j)
+        }
+    }
+    for (i in list.indices) {
+        val first = list[i].first
+        val second = list[i].second
+        if (abs(start.column - first) == abs(start.row - second)
+            && abs(end.column - first) == abs(end.row - second)
+        ) return listOf(start, Square(first, second), end)
+    }
+    return listOf()
+}
+
+fun notation(column: Int, row: Int): String {
+    val list = listOf<Char>('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
+    if (column in 1..8 && row in 1..8) {
+        return String.format("%c%d", list[column - 1], row)
+    }
+    return ""
+}
 
 /**
  * Средняя

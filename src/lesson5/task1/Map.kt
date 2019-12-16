@@ -171,6 +171,7 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
     val max: MutableMap<String, String>
     val min: MutableMap<String, String>
     var list: MutableList<String>
+    if (mapA.isEmpty() && mapB.isEmpty()) return emptyMap()
     if (mapA.size >= mapB.size) {
         max = mapA as MutableMap<String, String>
         min = mapB as MutableMap<String, String>
@@ -272,9 +273,11 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  * Например:
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
-fun canBuildFrom(chars: List<Char>, word: String): Boolean =
-    (word.toSet().intersect(chars.toSet()).toList().sorted()
+fun canBuildFrom(chars: List<Char>, word: String): Boolean {
+    if (chars.isEmpty() && word.isEmpty()) return true
+    return (word.toSet().intersect(chars.toSet()).toList().sorted()
             == chars.sorted()) && (chars.isNotEmpty())
+}
 
 /**
  * Средняя

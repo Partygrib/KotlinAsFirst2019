@@ -326,17 +326,14 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
                 if (k > 0) k += 1
                 else {
                     if (list[n] == 0) k += 1
-                    else {
-                        list1.add(s)
-                    }
+                    else list1.add(s)
                 }
             }
             ']' -> {
                 if (k > 0) k -= 1
                 else {
-                    if (list[n] != 0) {
-                        s = list1.last()
-                    } else {
+                    if (list[n] != 0) s = list1.last()
+                    else {
                         val b = list1.last()
                         list1.remove(b)
                     }
