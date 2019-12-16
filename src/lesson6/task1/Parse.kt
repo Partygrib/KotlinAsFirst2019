@@ -317,10 +317,10 @@ fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> {
     }
     var n = cells / 2
     while (s < commands.length && m < limit) {
-        m += 1
         if (n >= list.size || n < 0) {
             throw IllegalStateException()
         }
+        if (k == 0) m += 1
         when (commands[s]) {
             '[' -> {
                 if (k > 0) k += 1

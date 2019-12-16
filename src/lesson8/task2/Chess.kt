@@ -43,8 +43,8 @@ data class Square(val column: Int, val row: Int) {
 fun square(notation: String): Square {
     var n = 0
     val list = listOf<Char>('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
-    if (notation[0].toString() == """[abcdefgh]""" || notation[1].toString() == """[1-8]""" ||
-        notation.length != 2
+    if (notation.isEmpty() || notation[0].toString() == """[abcdefgh]"""
+        || notation[1].toString() == """[1-8]""" || notation.length != 2
     ) {
         throw IllegalArgumentException()
     }
@@ -205,7 +205,45 @@ fun kingMoveNumber(start: Square, end: Square): Int = TODO()
  *          kingTrajectory(Square(3, 5), Square(6, 2)) = listOf(Square(3, 5), Square(4, 4), Square(5, 3), Square(6, 2))
  * Если возможно несколько вариантов самой быстрой траектории, вернуть любой из них.
  */
-fun kingTrajectory(start: Square, end: Square): List<Square> = TODO()
+fun kingTrajectory(start: Square, end: Square): List<Square> {
+    val list = mutableListOf<Square>(start)
+    var i = 0
+    while (list[i] != end) {
+        when {
+            list[i].column == end.column && list[i].row == end.row -> list.add(Square(list[i].column, list[i].row))
+            list[i].column == end.column && list[i].row > end.row -> list.add(Square(list[i].column, list[i].row - 1))
+            list[i].column == end.column && list[i].row < end.row -> list.add(Square(list[i].column, list[i].row + 1))
+            list[i].row == end.row && list[i].column > end.column -> list.add(Square(list[i].column - 1, list[i].row))
+            list[i].row == end.row && list[i].column < end.column -> list.add(Square(list[i].column + 1, list[i].row))
+            list[i].column < end.column && list[i].row < end.row -> list.add(
+                Square(
+                    list[i].column + 1,
+                    list[i].row + 1
+                )
+            )
+            list[i].column > end.column && list[i].row > end.row -> list.add(
+                Square(
+                    list[i].column - 1,
+                    list[i].row - 1
+                )
+            )
+            list[i].column < end.column && list[i].row > end.row -> list.add(
+                Square(
+                    list[i].column + 1,
+                    list[i].row - 1
+                )
+            )
+            list[i].column > end.column && list[i].row < end.row -> list.add(
+                Square(
+                    list[i].column - 1,
+                    list[i].row + 1
+                )
+            )
+        }
+        i += 1
+    }
+    return list
+}
 
 /**
  * Сложная
