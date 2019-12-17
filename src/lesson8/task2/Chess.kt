@@ -42,9 +42,10 @@ data class Square(val column: Int, val row: Int) {
  */
 fun square(notation: String): Square {
     var n = 0
-    val list = listOf<Char>('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
-    if (notation.isEmpty() || notation[0].toString() == """[abcdefgh]"""
-        || notation[1].toString() == """[1-8]""" || notation.length != 2
+    val list = listOf('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h')
+    val list1 = listOf('1', '2', '3', '4', '5', '6', '7', '8')
+    if (notation.length != 2 || notation[0] !in list
+        || notation[1] !in list1
     ) {
         throw IllegalArgumentException()
     }
