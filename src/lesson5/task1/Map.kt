@@ -2,6 +2,8 @@
 
 package lesson5.task1
 
+import ru.spbstu.wheels.getEntry
+
 /**
  * Пример
  *
@@ -128,7 +130,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>): Unit {
     val list = mutableListOf<String>()
     if (a.isNotEmpty()) {
         for ((name, word) in a) {
-            if ((name == b[word]) && (word == b[name])) list.add(name)
+            if ((a[word] == b[word]) && (a[name] == b[name])) list.add(name)
         }
         for (i in 0 until list.size) {
             a.remove(list[i])
@@ -166,24 +168,25 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
     val x = mutableMapOf<String, String>()
     val bre = mutableListOf<String>()
     var k = 0
-    val max: MutableMap<String, String>
-    val min: MutableMap<String, String>
-    var list: MutableList<String>
+    val min: Map<String, String>
+    val max: Map<String, String>
+    var list: List<String>
     if (mapA.isEmpty() && mapB.isEmpty()) return emptyMap()
     if (mapA.size >= mapB.size) {
-        max = mapA as MutableMap<String, String>
-        min = mapB as MutableMap<String, String>
+        max = mapA
+        min = mapB
     } else {
-        max = mapB as MutableMap<String, String>
-        min = mapA as MutableMap<String, String>
+        max = mapB
+        min = mapA
     }
+    if (min.isEmpty()) return max
     for ((keyA, numberA) in max) {
         for ((keyB, numberB) in min) {
             if ((keyA == keyB) && (numberA != numberB)) {
                 list = if (max == mapA) {
-                    listOf<String>(numberA, numberB) as MutableList<String>
+                    listOf(numberA, numberB)
                 } else {
-                    listOf<String>(numberB, numberA) as MutableList<String>
+                    listOf(numberB, numberA)
                 }
                 x[keyA] = list.joinToString(separator = ", ")
                 bre.add(keyB)
@@ -258,7 +261,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
             }
         }
     }
-    return if (minN != "kind") minN
+    return if (minN != "null") minN
     else null
 }
 
@@ -272,7 +275,7 @@ fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): S
  *   canBuildFrom(listOf('a', 'b', 'o'), "baobab") -> true
  */
 fun canBuildFrom(chars: List<Char>, word: String): Boolean {
-    if (chars.isEmpty() && word.isEmpty()) return true
+    if (word.isEmpty()) return true
     return (word.toSet().intersect(chars.toSet()).toList().sorted()
             == chars.sorted()) && (chars.isNotEmpty())
 }
@@ -290,18 +293,12 @@ fun canBuildFrom(chars: List<Char>, word: String): Boolean {
  *   extractRepeats(listOf("a", "b", "a")) -> mapOf("a" to 2)
  */
 fun extractRepeats(list: List<String>): Map<String, Int> {
-    var k = 0
-    val x = mutableMapOf<String, Int>()
+    val map = mutableMapOf<String, Int>()
     for (element in list) {
-        for (i in list.indices) {
-            if (element == list[i]) {
-                k += 1
-            }
-        }
-        if (k > 1) x[element] = k
-        k = 0
+        if (element in map) map[element] = map[element]!! + 1
+        else if (element in list - element) map[element] = 1
     }
-    return x
+    return map
 }
 
 /**
@@ -342,15 +339,15 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
 fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
     var x: MutableMap<String, Set<String>>
     var y = mutableMapOf<String, Set<String>>()
-    x = hand(friends) as MutableMap<String, Set<String>>
+    x = hand(friends)
     while (x != y) {
         y = x
-        x = hand(x) as MutableMap<String, Set<String>>
+        x = hand(x)
     }
     return x
 }
 
-fun hand(friends: Map<String, Set<String>>): Map<String, Set<String>> {
+fun hand(friends: Map<String, Set<String>>): MutableMap<String, Set<String>> {
     var y = mutableSetOf<String>()
     val x = mutableMapOf<String, Set<String>>()
     for ((name1, names) in friends) {
